@@ -3,142 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KhlasseMenu — QR code menu pour restaurants</title>
-  <meta name="description" content="Créez un menu digital QR code pour votre restaurant en 2 minutes. Gratuit pour démarrer, Pro à 5€/mois.">
+  <title>Tableau de bord â€” KhlasseMenu</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <nav class="nav">
-    <div class="logo">
+    <a href="index.html" class="logo" style="text-decoration:none;color:inherit">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="19" y="14" width="2" height="2"/><rect x="14" y="19" width="2" height="2"/><rect x="18" y="18" width="3" height="3"/></svg>
       <span>Khlasse<span>Menu</span></span>
-    </div>
-    <div class="nav-links">
-      <a href="#features" class="btn">Fonctionnalités</a>
-      <a href="#pricing" class="btn">Tarifs</a>
-      <a href="dashboard.html" class="btn btn-primary">Commencer gratuit →</a>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:14px;color:var(--text-muted)" id="user-name">Mon compte</span>
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--blue-dark)" id="user-avatar">K</div>
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="badge">✦ 100% gratuit pour démarrer</div>
-    <h1>Votre menu en <span>QR code</span>,<br>en 2 minutes</h1>
-    <p>Créez un menu digital pour votre restaurant. Vos clients scannent, lisent, adorent. Sans application, sans matériel.</p>
-    <div class="hero-btns">
-      <a href="dashboard.html" class="btn btn-primary btn-lg">Créer mon QR code →</a>
-      <a href="#how" class="btn btn-lg">Comment ça marche ?</a>
+  <div class="dash-nav">
+    <div class="dash-tab active" onclick="switchTab('qr', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/></svg>
+      Mes QR codes
     </div>
-  </section>
+    <div class="dash-tab" onclick="switchTab('stats', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="4" height="8"/><rect x="9" y="9" width="4" height="13"/><rect x="16" y="4" width="4" height="18"/></svg>
+      Statistiques
+    </div>
+    <div class="dash-tab" onclick="switchTab('plan', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Mon plan
+    </div>
+  </div>
 
-  <section class="section section-alt" id="features">
-    <div class="container">
-      <h2 class="section-title">Tout ce dont vous avez besoin</h2>
-      <p class="section-sub">Simple, rapide, et adapté aux restaurants de toutes tailles.</p>
-      <div class="features-grid">
-        <div class="feat-card">
-          <div class="feat-icon">⚡</div>
-          <h3>QR code instantané</h3>
-          <p>Généré en 1 clic, prêt à imprimer et poser sur vos tables.</p>
+  <div class="dash-body">
+
+    <!-- TAB QR CODES -->
+    <div id="tab-qr">
+      <div class="plan-info">
+        <div>
+          <div style="font-size:15px;font-weight:600">Plan gratuit</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:2px">1 QR code sur 1 inclus â€” 10 plats max</div>
+          <div class="plan-bar"><div class="plan-bar-fill" id="plan-bar-fill" style="width:0%"></div></div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon">📱</div>
-          <h3>Menu 100% mobile</h3>
-          <p>Vos clients lisent le menu sur leur téléphone, sans télécharger d'application.</p>
+        <button class="btn btn-primary" onclick="switchTab('plan', document.querySelectorAll('.dash-tab')[2])">
+          Passer au Pro â€” 5 â‚¬/mois â†’
+        </button>
+      </div>
+
+      <div class="section-header">
+        <h2>Mes QR codes</h2>
+        <button class="btn btn-primary" id="btn-new-qr">+ Nouveau QR code</button>
+      </div>
+
+      <div class="qr-grid" id="qr-grid"></div>
+    </div>
+
+    <!-- TAB STATS -->
+    <div id="tab-stats" style="display:none">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="label">Scans ce mois</div>
+          <div class="value" id="stat-month">247</div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon">✏️</div>
-          <h3>Modifiable à tout moment</h3>
-          <p>Changez vos prix ou plats du jour. Le QR code, lui, ne change pas.</p>
+        <div class="stat-card">
+          <div class="label">Scans aujourd'hui</div>
+          <div class="value">12</div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon">📊</div>
-          <h3>Statistiques de scans</h3>
-          <p>Suivez combien de fois votre menu est consulté chaque jour.</p>
+        <div class="stat-card">
+          <div class="label">QR codes actifs</div>
+          <div class="value" id="stat-qr-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Restaurants</div>
+          <div class="value" id="stat-resto-count">0</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" id="how">
-    <div class="container">
-      <h2 class="section-title">Comment ça marche ?</h2>
-      <p class="section-sub">3 étapes et c'est en ligne.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>Créez votre compte</h3>
-          <p>Inscription gratuite en 30 secondes, sans carte bancaire.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>Ajoutez vos plats</h3>
-          <p>Entrez vos plats, prix et photos. Jusqu'à 10 plats en gratuit.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>Imprimez votre QR code</h3>
-          <p>Téléchargez et posez le QR code sur vos tables. C'est tout !</p>
-        </div>
+      <h2 style="font-size:16px;font-weight:600;margin-bottom:16px">Scans des 7 derniers jours</h2>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px">
+        <canvas id="chart" height="200"></canvas>
+      </div>
+      <div style="margin-top:16px;padding:14px 18px;background:#FEF3C7;border-radius:var(--radius);font-size:14px;color:#92400E">
+        â­ Les statistiques dÃ©taillÃ©es sont disponibles avec le plan <strong>Pro Ã  5 â‚¬/mois</strong>.
       </div>
     </div>
-  </section>
 
-  <section class="section section-alt" id="pricing">
-    <div class="container">
-      <h2 class="section-title">Tarifs simples</h2>
-      <p class="section-sub">Moins cher qu'un café par mois.</p>
-      <div class="plans">
+    <!-- TAB PLAN -->
+    <div id="tab-plan" style="display:none">
+      <h2 style="font-size:18px;font-weight:600;margin-bottom:20px">Mon plan</h2>
+      <div class="plans" style="max-width:560px;margin:0">
         <div class="plan">
           <h3>Gratuit</h3>
-          <div class="price">0 € <span>/ toujours</span></div>
+          <div class="price">0 â‚¬ <span>/ toujours</span></div>
           <ul>
-            <li><span class="check">✓</span> 1 QR code</li>
-            <li><span class="check">✓</span> Jusqu'à 10 plats</li>
-            <li><span class="check">✓</span> Menu mobile inclus</li>
-            <li><span class="cross">✗</span> Logo personnalisé</li>
-            <li><span class="cross">✗</span> Statistiques</li>
-            <li><span class="cross">✗</span> Plusieurs restaurants</li>
+            <li><span class="check">âœ“</span> 1 QR code</li>
+            <li><span class="check">âœ“</span> Jusqu'Ã  10 plats</li>
+            <li><span class="cross">âœ—</span> Logo personnalisÃ©</li>
+            <li><span class="cross">âœ—</span> Statistiques</li>
           </ul>
-          <a href="dashboard.html" class="btn" style="width:100%;justify-content:center">Commencer</a>
+          <div style="font-size:14px;color:var(--green);font-weight:600">âœ“ Plan actuel</div>
         </div>
         <div class="plan featured">
-          <div class="plan-badge">Le plus populaire</div>
+          <div class="plan-badge">Pro</div>
           <h3>Pro</h3>
-          <div class="price">5 € <span>/ mois</span><small>soit 0,17 € par jour</small></div>
+          <div class="price">5 â‚¬ <span>/ mois</span><small>soit 0,17 â‚¬ par jour</small></div>
           <ul>
-            <li><span class="check">✓</span> QR codes illimités</li>
-            <li><span class="check">✓</span> Plats illimités</li>
-            <li><span class="check">✓</span> Logo personnalisé</li>
-            <li><span class="check">✓</span> Statistiques avancées</li>
-            <li><span class="check">✓</span> Plusieurs restaurants</li>
-            <li><span class="check">✓</span> Sans "KhlasseMenu" affiché</li>
+            <li><span class="check">âœ“</span> QR codes illimitÃ©s</li>
+            <li><span class="check">âœ“</span> Plats illimitÃ©s</li>
+            <li><span class="check">âœ“</span> Logo personnalisÃ©</li>
+            <li><span class="check">âœ“</span> Statistiques avancÃ©es</li>
           </ul>
-          <a href="dashboard.html" class="btn btn-primary" style="width:100%;justify-content:center">Démarrer l'essai gratuit</a>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showToast('Paiement bientÃ´t disponible !')">
+            Passer au Pro â†’
+          </button>
         </div>
       </div>
-      <div class="roi-note">
-        💡 Pour un restaurant de 50 couverts/jour, 5 €/mois = 0,003 € par client. Un investissement quasi nul.
+    </div>
+
+  </div>
+
+  <!-- MODAL NOUVEAU QR -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h3>Nouveau QR code</h3>
+      <div class="form-group">
+        <label>Nom du restaurant</label>
+        <input type="text" id="inp-name" placeholder="Ex: Le Bistrot du Coin">
+      </div>
+      <div class="form-group">
+        <label>URL de votre menu (optionnel)</label>
+        <input type="text" id="inp-url" placeholder="https://...">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="btn-cancel">Annuler</button>
+        <button class="btn btn-primary" id="btn-create">CrÃ©er le QR code</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="cta-section">
-    <h2>Prêt à moderniser votre restaurant ?</h2>
-    <p>Rejoignez des centaines de restaurateurs qui utilisent KhlasseMenu.</p>
-    <a href="dashboard.html" class="btn btn-white btn-lg">Créer mon compte gratuit →</a>
-  </section>
+  <div class="toast" id="toast"></div>
 
-  <footer>
-    <div class="logo" style="font-size:15px">
-      <span>Khlasse<span style="color:var(--blue)">Menu</span></span>
-    </div>
-    <div>© 2025 KhlasseMenu — khlassemenu.fr</div>
-    <div style="display:flex;gap:16px">
-      <a href="#">Mentions légales</a>
-      <a href="#">Contact</a>
-    </div>
-  </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
